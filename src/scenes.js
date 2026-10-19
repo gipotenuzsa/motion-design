@@ -316,18 +316,18 @@ const S3 = (() => {
       let p = a.map((x, k) => lerp(x, b[k], mk));
       const d = 1 + 0.09 * kick * noise(u * 6, v * 6, lt);
       p = rot3(p.map(x => x * sc * d), ax, ay);
-      pts.push(proj(p, 760, 4.2));
+      pts.push(proj(p, 1080, 4.2));
     }
     // orbit rings
     g.lineWidth = 1.5;
     [[1.9, 0.9, C.c], [2.2, -0.6, C.o]].forEach(([R, tilt, col], ri) => {
       g.strokeStyle = col; g.globalAlpha = 0.5 * E.outCubic(inv(0.2, 0.8, lt)); g.beginPath();
       for (let k = 0; k <= 96; k++) {
-        const a = k / 96 * TAU, q = proj(rot3([Math.cos(a) * R * Math.min(sc, 1.2), 0, Math.sin(a) * R * Math.min(sc, 1.2)], tilt + ax, ay * 0.4 + ri), 760, 4.2);
+        const a = k / 96 * TAU, q = proj(rot3([Math.cos(a) * R * Math.min(sc, 1.2), 0, Math.sin(a) * R * Math.min(sc, 1.2)], tilt + ax, ay * 0.4 + ri), 1080, 4.2);
         k ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1]);
       }
       g.stroke();
-      const a = lt * (2 + ri), q = proj(rot3([Math.cos(a) * R, 0, Math.sin(a) * R], tilt + ax, ay * 0.4 + ri), 760, 4.2);
+      const a = lt * (2 + ri), q = proj(rot3([Math.cos(a) * R, 0, Math.sin(a) * R], tilt + ax, ay * 0.4 + ri), 1080, 4.2);
       g.globalAlpha = 1; glowDot(g, q[0], q[1], 26, ri ? RGB.o : RGB.c, 1);
     });
     g.globalAlpha = 1;
@@ -355,7 +355,7 @@ const S3 = (() => {
       g.stroke();
     });
     g.globalAlpha = 1; g.fillStyle = C.w;
-    for (const p of pts) { const s = clamp(p[3] / 260, 1, 5); g.fillRect(p[0] - s / 2, p[1] - s / 2, s, s); }
+    for (const p of pts) { const s = clamp(p[3] / 220, 1.5, 6); g.fillRect(p[0] - s / 2, p[1] - s / 2, s, s); }
     g.globalCompositeOperation = 'source-over';
     hud(lt, si, ay);
     FX.shake = 5 * kick; FX.ca = 3 + 6 * kick + 20 * inv(SCN - 0.4, SCN, lt);
@@ -585,17 +585,17 @@ const S7 = (() => {
       if (streak) g.beginPath();
       for (let i = grp; i < N; i += 3) {
         const p = posFn(i); if (!p) continue;
-        const q = proj(rot3(p, cam.ax, cam.ay, cam.az || 0), 820, 4);
-        const s = clamp(q[3] / 300, 0.8, 4);
+        const q = proj(rot3(p, cam.ax, cam.ay, cam.az || 0), 1300, 4);
+        const s = clamp(q[3] / 160, 1.6, 6);
         if (streak) {
-          const p2 = posFn(i, true); const q2 = proj(rot3(p2, cam.ax, cam.ay, cam.az || 0), 820, 4);
+          const p2 = posFn(i, true); const q2 = proj(rot3(p2, cam.ax, cam.ay, cam.az || 0), 1300, 4);
           g.moveTo(q2[0], q2[1]); g.lineTo(q[0], q[1]);
         } else {
-          g.globalAlpha = clamp(lerp(1, 0.25, (q[2] - 2.5) / 3)) * alphaMul;
+          g.globalAlpha = clamp(lerp(1, 0.45, (q[2] - 2.5) / 3)) * alphaMul;
           g.fillRect(q[0] - s / 2, q[1] - s / 2, s, s);
         }
       }
-      if (streak) { g.globalAlpha = alphaMul; g.lineWidth = 1.6; g.stroke(); }
+      if (streak) { g.globalAlpha = alphaMul; g.lineWidth = 2.2; g.stroke(); }
     }
     g.globalAlpha = 1; g.globalCompositeOperation = 'source-over';
   }
@@ -616,7 +616,7 @@ const S7 = (() => {
       ax: lerp(lerp(1.15, 0.55, E.inOutSine(inv(0, 3, bl))), 0.2, 1 - gw),
       ay: lt * 0.45, az: lerp(0.25 * (1 - gw), 0, E.inOutExpo(inv(5.5, 6.5, bl))),
     };
-    glowDot(g, W / 2, H / 2, 420, RGB.o, 0.35 * gw + 0.12);
+    glowDot(g, W / 2, H / 2, 520, RGB.o, 0.3 * gw + 0.08);
     draw(posFn, cam);
     // HUD
     g.font = font(17, 500, MONO); g.textAlign = 'left'; g.textBaseline = 'top'; g.fillStyle = C.w; g.globalAlpha = 0.8;
